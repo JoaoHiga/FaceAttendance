@@ -1,0 +1,6 @@
+<RCC>
+  <qresource prefix="logomecat">
+    <file>logomecat.png</file>
+    <file>logomecat_resized.png</file>
+  </qresource>
+</RCC>
