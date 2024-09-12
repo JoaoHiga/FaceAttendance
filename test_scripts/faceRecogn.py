@@ -2,7 +2,7 @@ import sqlite3
 from datetime import date
 
 # Conectar a la base de datos (o crearla si no existe)
-conn = sqlite3.connect('../attendance.db')
+conn = sqlite3.connect('../utils/final_attendance.db')
 cursor = conn.cursor()
 
 # # Crear la tabla de historial de asistencias si no existe
@@ -19,17 +19,7 @@ cursor = conn.cursor()
 # );
 # ''')
 
-cursor.execute("""
-                                SELECT fecha_asistencia
-FROM tabla_historial_asistencias
-WHERE id_estudiante = (
-	SELECT id_estudiante
-	FROM tabla_estudiantes
-	WHERE codigo_matricula = ?) 
-AND asistencia = false
-ORDER BY fecha_asistencia DESC
-LIMIT 1
-                """, (1000000001, ))
+cursor.execute('SELECT DISTINCT fecha_asistencia FROM tabla_historial_asistencias')
 
 # # Obtener todos los id_estudiante de la tabla_estudiantes
 # cursor.execute('SELECT id_estudiante FROM tabla_estudiantes')
@@ -47,9 +37,9 @@ LIMIT 1
 #     ''', (id_estudiante, fecha_actual, 0))
 #
 # # Guardar (commit) los cambios y cerrar la conexión
-# conn.commit()
+print(cursor.fetchall())
 
-commit = cursor.fetchone()
+# commit = cursor.fetchone()
 
 # for datos_asistencias in commit:
 #     if datos_asistencias[1] == 'NO':
@@ -59,5 +49,5 @@ commit = cursor.fetchone()
 #         numero_asistencias = datos_asistencias[0]
 #         print(numero_asistencias)
 
-print(commit)
+
 conn.close()

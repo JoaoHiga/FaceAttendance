@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1430</width>
-    <height>611</height>
+    <width>1050</width>
+    <height>600</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -19,7 +19,7 @@
      <rect>
       <x>40</x>
       <y>50</y>
-      <width>640</width>
+      <width>480</width>
       <height>480</height>
      </rect>
     </property>
@@ -39,7 +39,7 @@
    <widget class="Line" name="line">
     <property name="geometry">
      <rect>
-      <x>690</x>
+      <x>510</x>
       <y>20</y>
       <width>81</width>
       <height>521</height>
@@ -52,8 +52,8 @@
    <widget class="QLabel" name="timeNowLabel">
     <property name="geometry">
      <rect>
-      <x>1140</x>
-      <y>20</y>
+      <x>570</x>
+      <y>90</y>
       <width>281</width>
       <height>31</height>
      </rect>
@@ -73,13 +73,13 @@
      <string>DD/MM//YYYY HH:MM:SS</string>
     </property>
     <property name="alignment">
-     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
     </property>
    </widget>
    <widget class="QPushButton" name="registerButton">
     <property name="geometry">
      <rect>
-      <x>1010</x>
+      <x>720</x>
       <y>450</y>
       <width>141</width>
       <height>61</height>
@@ -124,9 +124,9 @@
    <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
-      <x>770</x>
-      <y>120</y>
-      <width>611</width>
+      <x>570</x>
+      <y>130</y>
+      <width>461</width>
       <height>261</height>
      </rect>
     </property>
@@ -305,19 +305,37 @@
      </item>
     </layout>
    </widget>
+   <widget class="QLabel" name="logoLabel">
+    <property name="geometry">
+     <rect>
+      <x>920</x>
+      <y>0</y>
+      <width>120</width>
+      <height>130</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="pixmap">
+     <pixmap resource="img.qrc">:/logomecat/logomecat_resized.png</pixmap>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1430</width>
-     <height>26</height>
+     <width>1050</width>
+     <height>21</height>
     </rect>
    </property>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
- <resources/>
+ <resources>
+  <include location="img.qrc"/>
+ </resources>
  <connections/>
 </ui>

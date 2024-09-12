@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1432</width>
-    <height>613</height>
+    <width>1050</width>
+    <height>600</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -19,7 +19,7 @@
      <rect>
       <x>40</x>
       <y>50</y>
-      <width>640</width>
+      <width>480</width>
       <height>480</height>
      </rect>
     </property>
@@ -39,8 +39,8 @@
    <widget class="QLabel" name="timeNowLabel">
     <property name="geometry">
      <rect>
-      <x>1140</x>
-      <y>20</y>
+      <x>560</x>
+      <y>80</y>
       <width>281</width>
       <height>31</height>
      </rect>
@@ -54,19 +54,19 @@
      </font>
     </property>
     <property name="layoutDirection">
-     <enum>Qt::RightToLeft</enum>
+     <enum>Qt::LeftToRight</enum>
     </property>
     <property name="text">
      <string>DD/MM//YYYY HH:MM:SS</string>
     </property>
     <property name="alignment">
-     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
     </property>
    </widget>
    <widget class="Line" name="line">
     <property name="geometry">
      <rect>
-      <x>690</x>
+      <x>500</x>
       <y>20</y>
       <width>81</width>
       <height>521</height>
@@ -79,8 +79,8 @@
    <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
-      <x>750</x>
-      <y>80</y>
+      <x>560</x>
+      <y>120</y>
       <width>553</width>
       <height>409</height>
      </rect>
@@ -276,20 +276,37 @@
      </item>
     </layout>
    </widget>
+   <widget class="QLabel" name="logoLabel">
+    <property name="geometry">
+     <rect>
+      <x>920</x>
+      <y>0</y>
+      <width>120</width>
+      <height>130</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="pixmap">
+     <pixmap resource="img.qrc">:/logomecat/logomecat_resized.png</pixmap>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1432</width>
-     <height>26</height>
+     <width>1050</width>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuOpciones">
     <property name="title">
      <string>Opciones</string>
     </property>
+    <addaction name="actionGenerarRegistroDiario"/>
     <addaction name="actionRegistrarAlumno"/>
     <addaction name="actionExportar"/>
     <addaction name="separator"/>
@@ -352,7 +369,20 @@
     <string>Ctrl+R</string>
    </property>
   </action>
+  <action name="actionGenerarRegistroDiario">
+   <property name="text">
+    <string>Generar Registro Diario</string>
+   </property>
+   <property name="statusTip">
+    <string>Generar Registro Diario</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+G</string>
+   </property>
+  </action>
  </widget>
- <resources/>
+ <resources>
+  <include location="img.qrc"/>
+ </resources>
  <connections/>
 </ui>

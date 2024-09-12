@@ -1,4 +1,5 @@
 import os
+import time
 
 import cv2
 from PyQt5.QtCore import Qt, QThread, pyqtSignal
@@ -19,6 +20,9 @@ class RegisterWindow(QMainWindow):
 
         self.image_feed_thread.image_update.connect(self.image_update_slot)
 
+        logoPixmap = QPixmap('windows_skeletons/logomecat_resized.png')
+        self.logoLabel.setPixmap(logoPixmap)
+
     def closeEvent(self, event):
         self.main_window.return_to_main_window()
         event.ignore()
@@ -34,6 +38,7 @@ class RegisterWindow(QMainWindow):
 
     def cancel_feed(self):
         self.image_feed_thread.stop()
+        self.image_feed_thread.wait()
 
 
 class ImageFeedThread(QThread):
@@ -47,7 +52,7 @@ class ImageFeedThread(QThread):
 
     def run(self):
         self.thread_active = True
-        Capture = cv2.VideoCapture(0)
+        Capture = cv2.VideoCapture(cv2.CAP_DSHOW)
 
         while self.thread_active:
             ret, frame = Capture.read()
@@ -102,7 +107,9 @@ class ImageFeedThread(QThread):
                 x, y, w, h = faces[0]
                 face_roi = self.current_image[y:y + h, x:x + w]
                 cv2.imwrite(image_path, face_roi)
+                time.sleep(0.5)
 
     def stop(self):
         self.thread_active = False
         self.quit()
+        self.wait()
