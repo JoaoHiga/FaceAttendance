@@ -1,5 +1,7 @@
 import sqlite3
-import sys, os
+import sys
+import os
+import shutil
 import threading
 import time
 import csv
@@ -15,6 +17,7 @@ from collections import Counter
 from VentanaRegistrar import *
 
 DB_PATH = r'utils/final_attendance.db'
+IMG_PATH = r'image_database/'
 REG_PATH = r'registros'
 fecha_actual = date.today()
 
@@ -70,7 +73,7 @@ class MainWindow(QMainWindow):
                                 WHERE codigo_matricula = ?
                                 ''', (code,))
                 query_result_1 = cursor.fetchone()
-                # print(query_result_1)
+                print(query_result_1)
 
                 cursor.execute('''
                                 SELECT 
@@ -84,7 +87,7 @@ class MainWindow(QMainWindow):
                 ''', (code,))
 
                 query_result_2 = cursor.fetchall()
-                # print(query_result_2)
+                print(query_result_2)
 
                 cursor.execute('''
                                 SELECT fecha_asistencia
@@ -99,13 +102,13 @@ class MainWindow(QMainWindow):
                 ''', (code,))
 
                 query_result_3 = cursor.fetchone()
-                # print(query_result_3)
+                print(query_result_3)
 
                 if query_result_1 is not None and query_result_2 is not None and query_result_3 is not None:
                     nombres, apellido_materno, apellido_paterno, codigo_matricula = query_result_1
 
-                    numero_inasistencias = query_result_2[0][0]
-                    numero_asistencias = query_result_2[0][1]
+                    numero_inasistencias = query_result_2[0][1]
+                    numero_asistencias = query_result_2[0][0]
 
                     ultima_fecha_asistencia = query_result_3[0]
 
@@ -199,7 +202,7 @@ class MainWindow(QMainWindow):
 
     def register_student(self):
         msg = QMessageBox()
-        msg.setStandardButtons(QMessageBox.Ok)
+        msg.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
 
         nombre_validado = False
         apellido_paterno_validado = False
@@ -215,7 +218,6 @@ class MainWindow(QMainWindow):
             nombre_validado = True
 
             if self.RegisterWindow.firstSurnameInput.text() == '':
-
                 msg.setIcon(QMessageBox.Warning)
                 msg.setWindowTitle('Incompleto')
                 msg.setText('Ingrese un apellido paterno.')
@@ -262,62 +264,59 @@ class MainWindow(QMainWindow):
                         msg.setWindowTitle('Incompleto')
                         msg.setText('Alumno ya registrado.')
                         msg.exec_()
-
                     else:
-                        cursor.execute('''INSERT INTO 
-                                          tabla_estudiantes 
-                                          VALUES (?, ?, ?, ?)
-                        ''', (codigo_numero, nombre, apellido_paterno, apellido_materno))
-                        connection.commit()
-                        # Guardar imagen en carpeta com codigo
-                        image_folder = 'faces_databases/' + str(codigo_numero)
+                        # Guardar imagen en carpeta con código
+                        image_folder = IMG_PATH + str(codigo_numero)
                         os.makedirs(image_folder, exist_ok=True)
 
-                        there_is_no_first_foto = True
-                        there_is_no_second_foto = True
-                        there_is_no_third_foto = True
-
-                        while there_is_no_first_foto:
-                            msg.setIcon(QMessageBox.Information)
-                            msg.setWindowTitle('Atención')
-                            msg.setText('Presiona OK para tomar la primera foto')
-                            msg.exec_()
-                            self.RegisterWindow.image_feed_thread.capture_and_save_image(image_folder, 1)
-                            if os.path.exists(os.path.join(image_folder, '1.png')):
-                                there_is_no_first_foto = False
-                            else:
+                        def take_photo(photo_number):
+                            foto_exits = False
+                            while not foto_exits:
+                                msg.setIcon(QMessageBox.Information)
+                                msg.setWindowTitle('Atención')
+                                msg.setText(f'Presiona OK para tomar la foto {photo_number}')
+                                result = msg.exec_()
+                                if result == QMessageBox.Cancel:
+                                    return False
+                                self.RegisterWindow.image_feed_thread.capture_and_save_image(image_folder, photo_number)
+                                if os.path.exists(os.path.join(image_folder, f'{photo_number}.jpg')):
+                                    foto_exits = True
+                                    break
                                 msg.setIcon(QMessageBox.Warning)
                                 msg.setWindowTitle('Error')
                                 msg.setText('No se detectó un rostro en la foto')
                                 msg.exec_()
 
-                        while there_is_no_second_foto:
-                            msg.setIcon(QMessageBox.Information)
-                            msg.setWindowTitle('Atención')
-                            msg.setText('Presiona OK para tomar la segunda foto')
-                            msg.exec_()
-                            self.RegisterWindow.image_feed_thread.capture_and_save_image(image_folder, 2)
-                            if os.path.exists(os.path.join(image_folder, '2.png')):
-                                there_is_no_second_foto = False
-                            else:
-                                msg.setIcon(QMessageBox.Warning)
-                                msg.setWindowTitle('Error')
-                                msg.setText('No se detectó un rostro en la foto')
-                                msg.exec_()
+                            return True
 
-                        while there_is_no_third_foto:
-                            msg.setIcon(QMessageBox.Information)
-                            msg.setWindowTitle('Atención')
-                            msg.setText('Presiona OK para tomar la primera foto')
-                            msg.exec_()
-                            self.RegisterWindow.image_feed_thread.capture_and_save_image(image_folder, 3)
-                            if os.path.exists(os.path.join(image_folder, '3.png')):
-                                there_is_no_third_foto = False
+                        cancelado = False
+
+                        if not take_photo(1):
+                            cancelado = True
+                        else:
+                            if not take_photo(2):
+                                cancelado = True
                             else:
-                                msg.setIcon(QMessageBox.Warning)
-                                msg.setWindowTitle('Error')
-                                msg.setText('No se detectó un rostro en la foto')
-                                msg.exec_()
+                                if not take_photo(3):
+                                    cancelado = True
+
+                        if cancelado:
+                            print('Registro cancelado')
+                            shutil.rmtree(image_folder)
+                            msg.setIcon(QMessageBox.Information)
+                            msg.setWindowTitle('Registro cancelado')
+                            msg.setText('Se canceló el registro.')
+                            msg.exec_()
+                            self.RegisterWindow.nameInput.clear()
+                            self.RegisterWindow.firstSurnameInput.clear()
+                            self.RegisterWindow.secondSurnameInput.clear()
+                            self.RegisterWindow.codeInput.clear()
+                            return  # Salir de la función sin guardar en la base de datos
+
+                        cursor.execute('''INSERT INTO tabla_estudiantes 
+                                          VALUES (?, ?, ?, ?)''',
+                                       (codigo_numero, nombre, apellido_paterno, apellido_materno))
+                        connection.commit()
 
                         cursor.execute('''
                                        SELECT * FROM tabla_historial_asistencias
@@ -326,9 +325,7 @@ class MainWindow(QMainWindow):
 
                         query_result = cursor.fetchone()
 
-                        print(query_result)
                         if query_result is None:
-
                             cursor.execute('''
                                            INSERT INTO tabla_historial_asistencias
                                            VALUES(?,?,?)
@@ -381,6 +378,7 @@ class MainWindow(QMainWindow):
             msg.setText(f'Se generaron registros del día {fecha_actual} correctamente.')
             msg.exec_()
 
+
 class UpdateDateThread(QThread):
     date_update = pyqtSignal(str)
 
@@ -413,7 +411,6 @@ class FaceVerificationThread(QThread):
         self.counter = 0
         self.name = 'unknown'
         self.code = 0000
-        self.IMAGE_DB_PATH = 'faces_databases'
         self.thread_active = False
 
     def run(self):
@@ -424,7 +421,7 @@ class FaceVerificationThread(QThread):
             try:
                 df = pd.DataFrame(DeepFace.find(
                     face_image,
-                    db_path=self.IMAGE_DB_PATH,
+                    db_path=IMG_PATH,
                     silent=True,
                     enforce_detection=False)[:][:][0])
                 student_codes = []
@@ -438,7 +435,7 @@ class FaceVerificationThread(QThread):
 
                 if matches:
                     most_common_match_code = matches[0][0]
-                    # print(most_common_match_code)
+                    print(most_common_match_code)
 
                 connection = sqlite3.connect(DB_PATH)
                 cursor = connection.cursor()
@@ -448,6 +445,7 @@ class FaceVerificationThread(QThread):
                                 WHERE codigo_matricula = ?
                 ''', (most_common_match_code,))
                 query_result = cursor.fetchone()
+                print(query_result)
 
                 if query_result is not None:
                     nombres, apellido_materno, apellido_paterno = query_result
@@ -548,7 +546,7 @@ class FaceVerificationThread(QThread):
 
 
 if __name__ == '__main__':
-    DeepFace.find('utils/test.png', db_path='faces_databases', enforce_detection=False)
+    DeepFace.find('utils/test.png', db_path=IMG_PATH, enforce_detection=False)
     App = QApplication(sys.argv)
     Root = MainWindow()
     Root.show()

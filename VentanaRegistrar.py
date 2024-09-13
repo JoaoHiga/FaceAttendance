@@ -2,6 +2,8 @@ import os
 import time
 
 import cv2
+import dlib
+import numpy as np
 from PyQt5.QtCore import Qt, QThread, pyqtSignal
 from PyQt5.QtGui import QImage, QPixmap
 from PyQt5.QtWidgets import QMainWindow
@@ -48,7 +50,6 @@ class ImageFeedThread(QThread):
         super(QThread, self).__init__()
         self.current_image = None
         self.thread_active = False
-        self.face_cascade = cv2.CascadeClassifier('utils/haarcascade_frontalface_default.xml')
 
     def run(self):
         self.thread_active = True
@@ -97,17 +98,59 @@ class ImageFeedThread(QThread):
         Capture.release()
 
     def capture_and_save_image(self, folder_path, image_number):
-        if self.current_image is not None:
-            image_path = os.path.join(folder_path, str(image_number) + '.png')
-            gray = cv2.cvtColor(self.current_image, cv2.COLOR_BGR2GRAY)
+        try:
+            if self.current_image is None:
+                raise ValueError("No hay imagen disponible para procesar.")
 
-            faces = self.face_cascade.detectMultiScale(gray, scaleFactor=1.3, minNeighbors=5, minSize=(30, 30))
+            model_file = "utils/mmod_human_face_detector.dat"
 
-            if len(faces) > 0:
-                x, y, w, h = faces[0]
-                face_roi = self.current_image[y:y + h, x:x + w]
-                cv2.imwrite(image_path, face_roi)
-                time.sleep(0.5)
+            if not os.path.exists(model_file):
+                raise FileNotFoundError("Archivo del modelo DNN no encontrado. Verifica la ruta.")
+
+            detector = dlib.get_frontal_face_detector()
+
+            os.makedirs(folder_path, exist_ok=True)
+
+            image_path = os.path.join(folder_path, f'{image_number}.jpg')
+
+            rgb_image = cv2.cvtColor(self.current_image, cv2.COLOR_BGR2RGB)
+
+            faces = detector(rgb_image)
+
+            if len(faces) == 0:
+                print("No se detectaron rostros.")
+                return
+
+            face = faces[0]
+            x, y, w, h = (face.left(), face.top(), face.right(), face.bottom())
+
+            face_roi = self.current_image[y:h, x:w]
+
+            scale_percent = 70  # Cambia este valor según sea necesario
+            new_width = int(face_roi.shape[1] * scale_percent / 100)
+            new_height = int(face_roi.shape[0] * scale_percent / 100)
+            resized_face_roi = cv2.resize(face_roi, (new_width, new_height))
+
+            quality = 100  # Calidad de compresión entre 0 y 100
+            success = cv2.imwrite(image_path, resized_face_roi, [cv2.IMWRITE_JPEG_QUALITY, quality])
+
+            if success:
+                print(f"Imagen guardada exitosamente en {image_path}")
+            else:
+                print(f"No se pudo guardar la imagen en {image_path}")
+
+            time.sleep(0.5)
+
+        except FileNotFoundError as e:
+            print(f"Error: {e}")
+        except ValueError as e:
+            print(f"Error: {e}")
+        except cv2.error as e:
+            print(f"Error de OpenCV: {e}")
+        except dlib.error as e:
+            print(f"Error de dlib: {e}")
+        except Exception as e:
+            print(f"Se produjo un error inesperado: {e}")
 
     def stop(self):
         self.thread_active = False
