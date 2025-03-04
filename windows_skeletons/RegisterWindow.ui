@@ -74,7 +74,7 @@ background-color: rgb(198, 206, 206);</string>
     <property name="font">
      <font>
       <family>Archivo SemiBold</family>
-      <pointsize>-1</pointsize>
+      <pointsize>1</pointsize>
       <weight>75</weight>
       <bold>true</bold>
      </font>
@@ -111,7 +111,7 @@ border: 2px solid #58e4f2;</string>
     <property name="font">
      <font>
       <family>Archivo SemiBold</family>
-      <pointsize>-1</pointsize>
+      <pointsize>1</pointsize>
       <weight>50</weight>
       <bold>false</bold>
      </font>
@@ -151,7 +151,7 @@ border: 2px solid #58e4f2;</string>
     <property name="font">
      <font>
       <family>Archivo SemiBold</family>
-      <pointsize>-1</pointsize>
+      <pointsize>1</pointsize>
       <weight>50</weight>
       <bold>false</bold>
      </font>
@@ -201,7 +201,7 @@ border: 2px solid #58e4f2;</string>
            <property name="font">
             <font>
              <family>Archivo SemiBold</family>
-             <pointsize>-1</pointsize>
+             <pointsize>1</pointsize>
              <weight>75</weight>
              <bold>true</bold>
             </font>
@@ -229,7 +229,7 @@ border: 2px solid #58e4f2;</string>
            <property name="font">
             <font>
              <family>Archivo SemiBold</family>
-             <pointsize>-1</pointsize>
+             <pointsize>1</pointsize>
              <weight>75</weight>
              <bold>true</bold>
             </font>
@@ -257,7 +257,7 @@ border: 2px solid #58e4f2;</string>
            <property name="font">
             <font>
              <family>Archivo SemiBold</family>
-             <pointsize>-1</pointsize>
+             <pointsize>1</pointsize>
              <weight>75</weight>
              <bold>true</bold>
             </font>
@@ -285,7 +285,7 @@ border: 2px solid #58e4f2;</string>
            <property name="font">
             <font>
              <family>Archivo SemiBold</family>
-             <pointsize>-1</pointsize>
+             <pointsize>1</pointsize>
              <weight>75</weight>
              <bold>true</bold>
             </font>
