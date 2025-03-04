@@ -2,14 +2,12 @@ import sqlite3
 import sys
 import os
 import shutil
-import threading
 import time
-import csv
 from datetime import date
 import pandas as pd
 from PyQt5.QtGui import QImage, QPixmap
 from PyQt5.QtWidgets import QApplication, QMainWindow, QMessageBox
-from PyQt5.QtCore import pyqtSignal, QThread, Qt, QTimer
+from PyQt5.QtCore import pyqtSignal, QThread, Qt
 from PyQt5.uic import loadUi
 import cv2
 from deepface import DeepFace
