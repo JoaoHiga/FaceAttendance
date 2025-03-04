@@ -1,4 +1,7 @@
 /test_scripts/
 /image_database/
-/registros/
 /.idea/
+/.venv/
+/utils/final_attendance.db
+/__pycache__/
+/.mypy_cache/

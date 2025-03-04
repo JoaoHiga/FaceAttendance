@@ -7,18 +7,21 @@
     <x>0</x>
     <y>0</y>
     <width>1050</width>
-    <height>600</height>
+    <height>570</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Control de Asistencias</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">background-color:#eef7f7;</string>
+  </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QLabel" name="imageLabel">
     <property name="geometry">
      <rect>
-      <x>40</x>
-      <y>50</y>
+      <x>20</x>
+      <y>20</y>
       <width>480</width>
       <height>480</height>
      </rect>
@@ -30,7 +33,9 @@
      </sizepolicy>
     </property>
     <property name="styleSheet">
-     <string notr="true">background-color: rgb(203, 201, 197);</string>
+     <string notr="true">border-radius: 7px;
+border: 2px solid #58e4f2;
+background-color: rgb(198, 206, 206);</string>
     </property>
     <property name="text">
      <string/>
@@ -39,22 +44,32 @@
    <widget class="QLabel" name="timeNowLabel">
     <property name="geometry">
      <rect>
-      <x>560</x>
-      <y>80</y>
-      <width>281</width>
+      <x>520</x>
+      <y>30</y>
+      <width>191</width>
       <height>31</height>
      </rect>
     </property>
     <property name="font">
      <font>
       <family>Archivo SemiBold</family>
-      <pointsize>10</pointsize>
+      <pointsize>-1</pointsize>
       <weight>75</weight>
       <bold>true</bold>
      </font>
     </property>
     <property name="layoutDirection">
      <enum>Qt::LeftToRight</enum>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">font-size: 14px;
+font-family: Archivo SemiBold;
+font-weight: bold;
+color:#272d2d;
+background-color: #31c8d8;
+padding: 3px;
+border-radius: 7px;
+border: 2px solid #58e4f2;</string>
     </property>
     <property name="text">
      <string>DD/MM//YYYY HH:MM:SS</string>
@@ -64,13 +79,23 @@
     </property>
    </widget>
    <widget class="Line" name="line">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
     <property name="geometry">
      <rect>
-      <x>500</x>
-      <y>20</y>
+      <x>470</x>
+      <y>0</y>
       <width>81</width>
-      <height>521</height>
+      <height>621</height>
      </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">
+</string>
+    </property>
+    <property name="lineWidth">
+     <number>1</number>
     </property>
     <property name="orientation">
      <enum>Qt::Vertical</enum>
@@ -79,24 +104,37 @@
    <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
-      <x>560</x>
+      <x>520</x>
       <y>120</y>
-      <width>553</width>
-      <height>409</height>
+      <width>511</width>
+      <height>381</height>
      </rect>
     </property>
-    <layout class="QHBoxLayout" name="horizontalLayout" stretch="3,10">
+    <layout class="QHBoxLayout" name="horizontalLayout" stretch="2,10">
      <item>
       <layout class="QVBoxLayout" name="verticalLayout">
+       <property name="spacing">
+        <number>35</number>
+       </property>
        <item>
         <widget class="QLabel" name="nameLabel">
          <property name="font">
           <font>
-           <family>Archivo ExtraBold</family>
-           <pointsize>14</pointsize>
+           <family>Archivo SemiBold</family>
+           <pointsize>-1</pointsize>
            <weight>75</weight>
            <bold>true</bold>
           </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">font-size: 16px;
+font-family: Archivo SemiBold;
+font-weight: bold;
+color:#272d2d;
+background-color: #31c8d8;
+padding: 3px;
+border-radius: 7px;
+border: 2px solid #58e4f2;</string>
          </property>
          <property name="text">
           <string>Nombre:</string>
@@ -110,14 +148,24 @@
         <widget class="QLabel" name="codeLabel">
          <property name="font">
           <font>
-           <family>Archivo ExtraBold</family>
-           <pointsize>14</pointsize>
+           <family>Archivo SemiBold</family>
+           <pointsize>-1</pointsize>
            <weight>75</weight>
            <bold>true</bold>
           </font>
          </property>
+         <property name="styleSheet">
+          <string notr="true">font-size: 16px;
+font-family: Archivo SemiBold;
+font-weight: bold;
+color:#272d2d;
+background-color: #31c8d8;
+padding: 3px;
+border-radius: 7px;
+border: 2px solid #58e4f2;</string>
+         </property>
          <property name="text">
-          <string>Código:</string>
+          <string>Código Matrícula:</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -128,14 +176,24 @@
         <widget class="QLabel" name="lastAttendanceLabel">
          <property name="font">
           <font>
-           <family>Archivo ExtraBold</family>
-           <pointsize>14</pointsize>
+           <family>Archivo SemiBold</family>
+           <pointsize>-1</pointsize>
            <weight>75</weight>
            <bold>true</bold>
           </font>
          </property>
+         <property name="styleSheet">
+          <string notr="true">font-size: 16px;
+font-family: Archivo SemiBold;
+font-weight: bold;
+color:#272d2d;
+background-color: #31c8d8;
+padding: 3px;
+border-radius: 7px;
+border: 2px solid #58e4f2;</string>
+         </property>
          <property name="text">
-          <string>Última Asistencia:</string>
+          <string>Ult. Asistencia:</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -146,14 +204,24 @@
         <widget class="QLabel" name="codeLabel_2">
          <property name="font">
           <font>
-           <family>Archivo ExtraBold</family>
-           <pointsize>14</pointsize>
+           <family>Archivo SemiBold</family>
+           <pointsize>-1</pointsize>
            <weight>75</weight>
            <bold>true</bold>
           </font>
          </property>
+         <property name="styleSheet">
+          <string notr="true">font-size: 16px;
+font-family: Archivo SemiBold;
+font-weight: bold;
+color:#272d2d;
+background-color: #31c8d8;
+padding: 3px;
+border-radius: 7px;
+border: 2px solid #58e4f2;</string>
+         </property>
          <property name="text">
-          <string>Nro Asistencias:</string>
+          <string>N° Asistencias:</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -164,11 +232,21 @@
         <widget class="QLabel" name="codeLabel_3">
          <property name="font">
           <font>
-           <family>Archivo ExtraBold</family>
-           <pointsize>14</pointsize>
+           <family>Archivo SemiBold</family>
+           <pointsize>-1</pointsize>
            <weight>75</weight>
            <bold>true</bold>
           </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">font-size: 16px;
+font-family: Archivo SemiBold;
+font-weight: bold;
+color:#272d2d;
+background-color: #31c8d8;
+padding: 3px;
+border-radius: 7px;
+border: 2px solid #58e4f2;</string>
          </property>
          <property name="text">
           <string>Nro Faltas:</string>
@@ -182,15 +260,28 @@
      </item>
      <item>
       <layout class="QVBoxLayout" name="verticalLayout_2">
+       <property name="spacing">
+        <number>35</number>
+       </property>
        <item>
         <widget class="QLabel" name="actualNameLabel">
          <property name="font">
           <font>
-           <family>Archivo</family>
-           <pointsize>14</pointsize>
-           <weight>50</weight>
-           <bold>false</bold>
+           <family>Archivo SemiBold</family>
+           <pointsize>-1</pointsize>
+           <weight>75</weight>
+           <bold>true</bold>
           </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">font-size: 15px;
+font-family: Archivo SemiBold;
+font-weight: bold;
+color:#272d2d;
+background-color:#83e5ef;
+padding: 3px;
+border-radius: 7px;
+border: 2px solid #58e4f2;</string>
          </property>
          <property name="text">
           <string/>
@@ -204,11 +295,21 @@
         <widget class="QLabel" name="actualCodeLabel">
          <property name="font">
           <font>
-           <family>Archivo</family>
-           <pointsize>14</pointsize>
-           <weight>50</weight>
-           <bold>false</bold>
+           <family>Archivo SemiBold</family>
+           <pointsize>-1</pointsize>
+           <weight>75</weight>
+           <bold>true</bold>
           </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">font-size: 15px;
+font-family: Archivo SemiBold;
+font-weight: bold;
+color:#272d2d;
+background-color:#83e5ef;
+padding: 3px;
+border-radius: 7px;
+border: 2px solid #58e4f2;</string>
          </property>
          <property name="text">
           <string/>
@@ -222,11 +323,21 @@
         <widget class="QLabel" name="actualLastAttendanceLabel">
          <property name="font">
           <font>
-           <family>Archivo</family>
-           <pointsize>14</pointsize>
-           <weight>50</weight>
-           <bold>false</bold>
+           <family>Archivo SemiBold</family>
+           <pointsize>-1</pointsize>
+           <weight>75</weight>
+           <bold>true</bold>
           </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">font-size: 15px;
+font-family: Archivo SemiBold;
+font-weight: bold;
+color:#272d2d;
+background-color:#83e5ef;
+padding: 3px;
+border-radius: 7px;
+border: 2px solid #58e4f2;</string>
          </property>
          <property name="text">
           <string/>
@@ -240,11 +351,21 @@
         <widget class="QLabel" name="actualNumberOfAttendanceLabel">
          <property name="font">
           <font>
-           <family>Archivo</family>
-           <pointsize>14</pointsize>
-           <weight>50</weight>
-           <bold>false</bold>
+           <family>Archivo SemiBold</family>
+           <pointsize>-1</pointsize>
+           <weight>75</weight>
+           <bold>true</bold>
           </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">font-size: 15px;
+font-family: Archivo SemiBold;
+font-weight: bold;
+color:#272d2d;
+background-color:#83e5ef;
+padding: 3px;
+border-radius: 7px;
+border: 2px solid #58e4f2;</string>
          </property>
          <property name="text">
           <string/>
@@ -258,11 +379,21 @@
         <widget class="QLabel" name="actualNumberOfNoAttendanceLabel">
          <property name="font">
           <font>
-           <family>Archivo</family>
-           <pointsize>14</pointsize>
-           <weight>50</weight>
-           <bold>false</bold>
+           <family>Archivo SemiBold</family>
+           <pointsize>-1</pointsize>
+           <weight>75</weight>
+           <bold>true</bold>
           </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">font-size: 15px;
+font-family: Archivo SemiBold;
+font-weight: bold;
+color:#272d2d;
+background-color:#83e5ef;
+padding: 3px;
+border-radius: 7px;
+border: 2px solid #58e4f2;</string>
          </property>
          <property name="text">
           <string/>
@@ -280,10 +411,15 @@
     <property name="geometry">
      <rect>
       <x>920</x>
-      <y>0</y>
+      <y>-10</y>
       <width>120</width>
       <height>130</height>
      </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: transparent;
+    margin: 0;
+    padding: 0;</string>
     </property>
     <property name="text">
      <string/>
@@ -292,6 +428,11 @@
      <pixmap resource="img.qrc">:/logomecat/logomecat_resized.png</pixmap>
     </property>
    </widget>
+   <zorder>line</zorder>
+   <zorder>imageLabel</zorder>
+   <zorder>timeNowLabel</zorder>
+   <zorder>layoutWidget</zorder>
+   <zorder>logoLabel</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">

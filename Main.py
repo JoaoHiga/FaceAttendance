@@ -10,13 +10,13 @@ from PyQt5.QtWidgets import QApplication, QMainWindow, QMessageBox
 from PyQt5.QtCore import pyqtSignal, QThread, Qt
 from PyQt5.uic import loadUi
 import cv2
-from deepface import DeepFace
+from deepface import DeepFace # noqa: F403
 from collections import Counter
-from VentanaRegistrar import *
+from VentanaRegistrar import *  # noqa: F403
 
-DB_PATH = r'utils/final_attendance.db'
-IMG_PATH = r'image_database/'
-REG_PATH = r'registros'
+DB_PATH = r"utils/final_attendance.db"
+IMG_PATH = r"image_database/"
+REG_PATH = r"registros"
 fecha_actual = date.today()
 
 
@@ -25,15 +25,17 @@ class MainWindow(QMainWindow):
         super(MainWindow, self).__init__()
         self.FaceVerificationThread = FaceVerificationThread()
         self.UpdateDateThread = UpdateDateThread()
-        self.RegisterWindow = RegisterWindow(self)
+        self.RegisterWindow = RegisterWindow(self)  # noqa: F405
         self.init_ui()
 
     def init_ui(self):
-        loadUi('windows_skeletons/MainWindow.ui', self)
+        loadUi("windows_skeletons/MainWindow.ui", self)
 
         self.FaceVerificationThread.start()
         self.FaceVerificationThread.image_update.connect(self.image_update_slot)
-        self.FaceVerificationThread.student_data_update.connect(self.update_student_data_labels)
+        self.FaceVerificationThread.student_data_update.connect(
+            self.update_student_data_labels
+        )
 
         self.UpdateDateThread.start()
         self.UpdateDateThread.date_update.connect(self.date_update_slot)
@@ -46,7 +48,7 @@ class MainWindow(QMainWindow):
         self.RegisterWindow.backButton.clicked.connect(self.return_to_main_window)
         self.RegisterWindow.registerButton.clicked.connect(self.register_student)
 
-        logoPixmap = QPixmap('windows_skeletons/logomecat_resized.png')
+        logoPixmap = QPixmap("windows_skeletons/logomecat_resized.png")
         self.logoLabel.setPixmap(logoPixmap)
 
     def image_update_slot(self, image):
@@ -58,22 +60,26 @@ class MainWindow(QMainWindow):
 
     def update_student_data_labels(self, code):
         with sqlite3.connect(DB_PATH) as connection:
-            self.actualNameLabel.setText('------------------------')
-            self.actualCodeLabel.setText('------------------------')
-            self.actualNumberOfAttendanceLabel.setText('------------------------')
-            self.actualNumberOfNoAttendanceLabel.setText('------------------------')
-            self.actualLastAttendanceLabel.setText('------------------------')
+            self.actualNameLabel.setText("------------------------")
+            self.actualCodeLabel.setText("------------------------")
+            self.actualNumberOfAttendanceLabel.setText("------------------------")
+            self.actualNumberOfNoAttendanceLabel.setText("------------------------")
+            self.actualLastAttendanceLabel.setText("------------------------")
             try:
                 cursor = connection.cursor()
-                cursor.execute('''
+                cursor.execute(
+                    """
                                 SELECT nombres, apellido_paterno, apellido_materno, codigo_matricula
                                 FROM tabla_estudiantes
                                 WHERE codigo_matricula = ?
-                                ''', (code,))
+                                """,
+                    (code,),
+                )
                 query_result_1 = cursor.fetchone()
-                print(query_result_1)
+                # print(query_result_1)
 
-                cursor.execute('''
+                cursor.execute(
+                    """
                                 SELECT 
                                     count(CASE WHEN tabla_historial_asistencias.asistencia = true Then 1 END) AS asistencia,
 	                                count(CASE WHEN tabla_historial_asistencias.asistencia = false Then 0 END) AS inasistencia
@@ -82,12 +88,15 @@ class MainWindow(QMainWindow):
                                 ON tabla_estudiantes.codigo_matricula = tabla_historial_asistencias.codigo_matricula
                                 WHERE tabla_estudiantes.codigo_matricula = ?
 
-                ''', (code,))
+                """,
+                    (code,),
+                )
 
                 query_result_2 = cursor.fetchall()
-                print(query_result_2)
+                # print(query_result_2)
 
-                cursor.execute('''
+                cursor.execute(
+                    """
                                 SELECT fecha_asistencia
                                 FROM tabla_historial_asistencias
                                 WHERE codigo_matricula = (
@@ -97,23 +106,35 @@ class MainWindow(QMainWindow):
                                 AND asistencia = true
                                 ORDER BY fecha_asistencia DESC
                                 LIMIT 1
-                ''', (code,))
+                """,
+                    (code,),
+                )
 
                 query_result_3 = cursor.fetchone()
-                print(query_result_3)
+                # print(query_result_3)
 
-                if query_result_1 is not None and query_result_2 is not None and query_result_3 is not None:
-                    nombres, apellido_materno, apellido_paterno, codigo_matricula = query_result_1
+                if (
+                    query_result_1 is not None
+                    and query_result_2 is not None
+                    and query_result_3 is not None
+                ):
+                    nombres, apellido_materno, apellido_paterno, codigo_matricula = (
+                        query_result_1
+                    )
 
                     numero_inasistencias = query_result_2[0][1]
                     numero_asistencias = query_result_2[0][0]
 
                     ultima_fecha_asistencia = query_result_3[0]
 
-                    self.actualNameLabel.setText(f'{nombres} {apellido_paterno} {apellido_materno}')
+                    self.actualNameLabel.setText(
+                        f"{nombres} {apellido_paterno} {apellido_materno}"
+                    )
                     self.actualCodeLabel.setText(str(codigo_matricula))
                     self.actualNumberOfAttendanceLabel.setText(str(numero_asistencias))
-                    self.actualNumberOfNoAttendanceLabel.setText(str(numero_inasistencias))
+                    self.actualNumberOfNoAttendanceLabel.setText(
+                        str(numero_inasistencias)
+                    )
                     self.actualLastAttendanceLabel.setText(ultima_fecha_asistencia)
 
             except Exception as e:
@@ -128,7 +149,9 @@ class MainWindow(QMainWindow):
         self.FaceVerificationThread = FaceVerificationThread()
         self.FaceVerificationThread.start()
         self.FaceVerificationThread.image_update.connect(self.image_update_slot)
-        self.FaceVerificationThread.student_data_update.connect(self.update_student_data_labels)
+        self.FaceVerificationThread.student_data_update.connect(
+            self.update_student_data_labels
+        )
 
     def open_register_window(self):
         self.cancel_feed()
@@ -143,19 +166,19 @@ class MainWindow(QMainWindow):
         self.resume_feed()
 
     def export_to_csv(self):
-
         # Retrieve information from database
         with sqlite3.connect(DB_PATH) as connection:
             cursor = connection.cursor()
-            cursor.execute('''SELECT DISTINCT fecha_asistencia 
+            cursor.execute("""SELECT DISTINCT fecha_asistencia 
                               FROM tabla_historial_asistencias 
-                              ORDER BY fecha_asistencia''')
+                              ORDER BY fecha_asistencia""")
             fechas = [row[0] for row in cursor.fetchall()]
             fechas_columnas = []
             for fecha in fechas:
                 fechas_columnas.append(
                     f"MAX(CASE WHEN tabla_historial_asistencias.fecha_asistencia = '{fecha}' THEN "
-                    f"tabla_historial_asistencias.asistencia ELSE 0 END) AS '{fecha}'")
+                    f"tabla_historial_asistencias.asistencia ELSE 0 END) AS '{fecha}'"
+                )
 
             fechas_columnas_sql = ",\n    ".join(fechas_columnas)
 
@@ -182,20 +205,20 @@ class MainWindow(QMainWindow):
             column_names = [desc[0] for desc in cursor.description]
 
             # Save retrieved information into a Excel file
-            nombre_excel = f'{fecha_actual}.xlsx'
+            nombre_excel = f"{fecha_actual}.xlsx"
             ruta_excel = os.path.join(REG_PATH, nombre_excel)
 
             if nombre_excel in os.listdir(REG_PATH):
                 os.remove(ruta_excel)
 
             df = pd.DataFrame(query_result, columns=column_names)
-            df.to_excel(ruta_excel, index=False, engine='openpyxl')
+            df.to_excel(ruta_excel, index=False, engine="openpyxl")
 
             msg = QMessageBox()
             msg.setStandardButtons(QMessageBox.Ok)
             msg.setIcon(QMessageBox.Information)
-            msg.setWindowTitle('Exportación')
-            msg.setText(f'Exportación Exitosa {nombre_excel}')
+            msg.setWindowTitle("Exportación")
+            msg.setText(f"Exportación Exitosa {nombre_excel}")
             msg.exec_()
 
     def register_student(self):
@@ -207,42 +230,44 @@ class MainWindow(QMainWindow):
         apellido_materno_validado = False
         codigo_numero_validado = False
 
-        if self.RegisterWindow.nameInput.text() == '':
+        if self.RegisterWindow.nameInput.text() == "":
             msg.setIcon(QMessageBox.Warning)
-            msg.setWindowTitle('Incompleto')
-            msg.setText('Ingrese un nombre.')
+            msg.setWindowTitle("Incompleto")
+            msg.setText("Ingrese un nombre.")
             msg.exec_()
         else:
             nombre_validado = True
 
-            if self.RegisterWindow.firstSurnameInput.text() == '':
+            if self.RegisterWindow.firstSurnameInput.text() == "":
                 msg.setIcon(QMessageBox.Warning)
-                msg.setWindowTitle('Incompleto')
-                msg.setText('Ingrese un apellido paterno.')
+                msg.setWindowTitle("Incompleto")
+                msg.setText("Ingrese un apellido paterno.")
                 msg.exec_()
             else:
                 apellido_paterno_validado = True
 
-                if self.RegisterWindow.secondSurnameInput.text() == '':
+                if self.RegisterWindow.secondSurnameInput.text() == "":
                     msg.setIcon(QMessageBox.Warning)
-                    msg.setWindowTitle('Incompleto')
-                    msg.setText('Ingrese un apellido materno.')
+                    msg.setWindowTitle("Incompleto")
+                    msg.setText("Ingrese un apellido materno.")
                     msg.exec_()
                 else:
                     apellido_materno_validado = True
 
-                    if self.RegisterWindow.codeInput.text() == '':
+                    if self.RegisterWindow.codeInput.text() == "":
                         msg.setIcon(QMessageBox.Warning)
-                        msg.setWindowTitle('Incompleto')
-                        msg.setText('Ingrese un codigo de matrícula.')
+                        msg.setWindowTitle("Incompleto")
+                        msg.setText("Ingrese un codigo de matrícula.")
                         msg.exec_()
                     else:
                         codigo_numero_validado = True
 
-        validacion_completa = (nombre_validado
-                               and apellido_paterno_validado
-                               and apellido_materno_validado
-                               and codigo_numero_validado)
+        validacion_completa = (
+            nombre_validado
+            and apellido_paterno_validado
+            and apellido_materno_validado
+            and codigo_numero_validado
+        )
 
         if validacion_completa:
             nombre = self.RegisterWindow.nameInput.text()
@@ -254,13 +279,13 @@ class MainWindow(QMainWindow):
 
                 with sqlite3.connect(DB_PATH) as connection:
                     cursor = connection.cursor()
-                    cursor.execute('SELECT codigo_matricula FROM tabla_estudiantes')
+                    cursor.execute("SELECT codigo_matricula FROM tabla_estudiantes")
                     lista_codigos = cursor.fetchall()
 
                     if (codigo_numero,) in lista_codigos:
                         msg.setIcon(QMessageBox.Warning)
-                        msg.setWindowTitle('Incompleto')
-                        msg.setText('Alumno ya registrado.')
+                        msg.setWindowTitle("Incompleto")
+                        msg.setText("Alumno ya registrado.")
                         msg.exec_()
                     else:
                         # Guardar imagen en carpeta con código
@@ -271,18 +296,24 @@ class MainWindow(QMainWindow):
                             foto_exits = False
                             while not foto_exits:
                                 msg.setIcon(QMessageBox.Information)
-                                msg.setWindowTitle('Atención')
-                                msg.setText(f'Presiona OK para tomar la foto {photo_number}')
+                                msg.setWindowTitle("Atención")
+                                msg.setText(
+                                    f"Presiona OK para tomar la foto {photo_number}"
+                                )
                                 result = msg.exec_()
                                 if result == QMessageBox.Cancel:
                                     return False
-                                self.RegisterWindow.image_feed_thread.capture_and_save_image(image_folder, photo_number)
-                                if os.path.exists(os.path.join(image_folder, f'{photo_number}.jpg')):
+                                self.RegisterWindow.image_feed_thread.capture_and_save_image(
+                                    image_folder, photo_number
+                                )
+                                if os.path.exists(
+                                    os.path.join(image_folder, f"{photo_number}.jpg")
+                                ):
                                     foto_exits = True
                                     break
                                 msg.setIcon(QMessageBox.Warning)
-                                msg.setWindowTitle('Error')
-                                msg.setText('No se detectó un rostro en la foto')
+                                msg.setWindowTitle("Error")
+                                msg.setText("No se detectó un rostro en la foto")
                                 msg.exec_()
 
                             return True
@@ -299,11 +330,11 @@ class MainWindow(QMainWindow):
                                     cancelado = True
 
                         if cancelado:
-                            print('Registro cancelado')
+                            print("Registro cancelado")
                             shutil.rmtree(image_folder)
                             msg.setIcon(QMessageBox.Information)
-                            msg.setWindowTitle('Registro cancelado')
-                            msg.setText('Se canceló el registro.')
+                            msg.setWindowTitle("Registro cancelado")
+                            msg.setText("Se canceló el registro.")
                             msg.exec_()
                             self.RegisterWindow.nameInput.clear()
                             self.RegisterWindow.firstSurnameInput.clear()
@@ -311,30 +342,38 @@ class MainWindow(QMainWindow):
                             self.RegisterWindow.codeInput.clear()
                             return  # Salir de la función sin guardar en la base de datos
 
-                        cursor.execute('''INSERT INTO tabla_estudiantes 
-                                          VALUES (?, ?, ?, ?)''',
-                                       (codigo_numero, nombre, apellido_paterno, apellido_materno))
+                        cursor.execute(
+                            """INSERT INTO tabla_estudiantes 
+                                          VALUES (?, ?, ?, ?)""",
+                            (codigo_numero, nombre, apellido_paterno, apellido_materno),
+                        )
                         connection.commit()
 
-                        cursor.execute('''
+                        cursor.execute(
+                            """
                                        SELECT * FROM tabla_historial_asistencias
                                        WHERE codigo_matricula = ? AND fecha_asistencia = ?
-                                       ''', (codigo_numero, fecha_actual))
+                                       """,
+                            (codigo_numero, fecha_actual),
+                        )
 
                         query_result = cursor.fetchone()
 
                         if query_result is None:
-                            cursor.execute('''
+                            cursor.execute(
+                                """
                                            INSERT INTO tabla_historial_asistencias
                                            VALUES(?,?,?)
-                                           ''', (codigo_numero, fecha_actual, 0))
+                                           """,
+                                (codigo_numero, fecha_actual, 0),
+                            )
                             connection.commit()
                         else:
-                            print('Cuenta con registro')
+                            print("Cuenta con registro")
 
                         msg.setIcon(QMessageBox.Information)
-                        msg.setWindowTitle('Correcto')
-                        msg.setText('Se registró correctamente el alumno.')
+                        msg.setWindowTitle("Correcto")
+                        msg.setText("Se registró correctamente el alumno.")
                         msg.exec_()
 
                         self.RegisterWindow.nameInput.clear()
@@ -344,36 +383,44 @@ class MainWindow(QMainWindow):
 
             except ValueError:
                 msg.setIcon(QMessageBox.Warning)
-                msg.setWindowTitle('Incompleto')
-                msg.setText('Ingrese un codigo de matrícula válido.')
+                msg.setWindowTitle("Incompleto")
+                msg.setText("Ingrese un codigo de matrícula válido.")
                 msg.exec_()
                 pass
 
     def generate_registers(self):
         with sqlite3.connect(DB_PATH) as connection:
             cursor = connection.cursor()
-            cursor.execute('SELECT codigo_matricula FROM tabla_estudiantes')
+            cursor.execute("SELECT codigo_matricula FROM tabla_estudiantes")
             estudiantes = cursor.fetchall()
-            cursor.execute('SELECT DISTINCT fecha_asistencia FROM tabla_historial_asistencias')
+            cursor.execute(
+                "SELECT DISTINCT fecha_asistencia FROM tabla_historial_asistencias"
+            )
             fechas = cursor.fetchall()
             for estudiante in estudiantes:
                 for fecha in fechas:
-                    cursor.execute('''
+                    cursor.execute(
+                        """
                                    SELECT * FROM tabla_historial_asistencias
                                    WHERE fecha_asistencia=? AND codigo_matricula=?
-                                   ''', (fecha[0], estudiante[0]))
+                                   """,
+                        (fecha[0], estudiante[0]),
+                    )
                     register = cursor.fetchone()
                     if register is None:
-                        cursor.execute('''
+                        cursor.execute(
+                            """
                                         INSERT INTO tabla_historial_asistencias
                                         VALUES(?,?,?) 
-                                       ''', (estudiante[0], fecha[0], 0))
+                                       """,
+                            (estudiante[0], fecha[0], 0),
+                        )
 
             msg = QMessageBox()
             msg.setStandardButtons(QMessageBox.Ok)
             msg.setIcon(QMessageBox.Information)
-            msg.setWindowTitle('Correcto')
-            msg.setText(f'Se generaron registros del día {fecha_actual} correctamente.')
+            msg.setWindowTitle("Correcto")
+            msg.setText(f"Se generaron registros del día {fecha_actual} correctamente.")
             msg.exec_()
 
 
@@ -390,7 +437,7 @@ class UpdateDateThread(QThread):
         while self.thread_active:
             global fecha_actual
             fecha_actual = date.today()
-            hora_actual = time.strftime('%d/%m/%Y %H:%M:%S')
+            hora_actual = time.strftime("%d/%m/%Y %H:%M:%S")
             self.date_update.emit(hora_actual)
             time.sleep(1)
             pass
@@ -407,7 +454,7 @@ class FaceVerificationThread(QThread):
     def __init__(self):
         super(QThread, self).__init__()
         self.counter = 0
-        self.name = 'unknown'
+        self.name = "unknown"
         self.code = 0000
         self.thread_active = False
 
@@ -417,38 +464,47 @@ class FaceVerificationThread(QThread):
 
         def check_face(face_image):
             try:
-                df = pd.DataFrame(DeepFace.find(
-                    face_image,
-                    db_path=IMG_PATH,
-                    silent=True,
-                    enforce_detection=False)[:][:][0])
+                df = pd.DataFrame(
+                    DeepFace.find(
+                        face_image,
+                        db_path=IMG_PATH,
+                        silent=True,
+                        enforce_detection=False,
+                    )[:][:][0]
+                )
                 student_codes = []
 
                 for n in df[df.columns[0]]:
                     student_codes.append(os.path.split(os.path.split(n)[0])[1])
 
-                most_common_match_name = 'unknown'
+                most_common_match_name = "unknown"
                 most_common_match_code = 0000000000000000000000000
                 matches = Counter(student_codes).most_common(n=1)
 
                 if matches:
                     most_common_match_code = matches[0][0]
-                    print(most_common_match_code)
+                    # print(most_common_match_code)
 
                 connection = sqlite3.connect(DB_PATH)
                 cursor = connection.cursor()
-                cursor.execute('''
+                cursor.execute(
+                    """
                                 SELECT nombres, apellido_materno, apellido_paterno
                                 FROM tabla_estudiantes
                                 WHERE codigo_matricula = ?
-                ''', (most_common_match_code,))
+                """,
+                    (most_common_match_code,),
+                )
                 query_result = cursor.fetchone()
-                print(query_result)
+                # print(query_result)
 
                 if query_result is not None:
                     nombres, apellido_materno, apellido_paterno = query_result
-                    most_common_match_name = f'{nombres} {apellido_paterno} {apellido_materno}'
-                    cursor.execute('''
+                    most_common_match_name = (
+                        f"{nombres} {apellido_paterno} {apellido_materno}"
+                    )
+                    cursor.execute(
+                        """
                                     UPDATE tabla_historial_asistencias
                                     SET asistencia = true
                                     WHERE codigo_matricula = (
@@ -456,7 +512,9 @@ class FaceVerificationThread(QThread):
                                         FROM tabla_estudiantes
                                         WHERE codigo_matricula = ?)
                                     AND fecha_asistencia = ?
-                    ''', (most_common_match_code, fecha_actual))
+                    """,
+                        (most_common_match_code, fecha_actual),
+                    )
                     connection.commit()
                 return most_common_match_name, int(most_common_match_code)
 
@@ -507,27 +565,33 @@ class FaceVerificationThread(QThread):
                 Image = cv2.cvtColor(resized_frame, cv2.COLOR_BGR2RGB)
                 FlippedImage = cv2.flip(Image, 1)
 
-                if self.name == 'unknown':
-                    cv2.putText(FlippedImage,
-                                'No identificado',
-                                (20, 450),
-                                cv2.FONT_HERSHEY_DUPLEX,
-                                1,
-                                (255, 0, 0),
-                                3)
+                if self.name == "unknown":
+                    cv2.putText(
+                        FlippedImage,
+                        "No identificado",
+                        (20, 450),
+                        cv2.FONT_HERSHEY_DUPLEX,
+                        1,
+                        (255, 0, 0),
+                        3,
+                    )
                 else:
-                    cv2.putText(FlippedImage,
-                                str(self.name),
-                                (20, 450),
-                                cv2.FONT_HERSHEY_DUPLEX,
-                                1,
-                                (0, 255, 0),
-                                3)
+                    cv2.putText(
+                        FlippedImage,
+                        str(self.name),
+                        (20, 450),
+                        cv2.FONT_HERSHEY_DUPLEX,
+                        1,
+                        (0, 255, 0),
+                        3,
+                    )
 
-                ConvertToQtFormat = QImage(FlippedImage.data,
-                                           FlippedImage.shape[1],
-                                           FlippedImage.shape[0],
-                                           QImage.Format_RGB888)
+                ConvertToQtFormat = QImage(
+                    FlippedImage.data,
+                    FlippedImage.shape[1],
+                    FlippedImage.shape[0],
+                    QImage.Format_RGB888,
+                )
                 Pic = ConvertToQtFormat.scaled(480, 480, Qt.KeepAspectRatio)
                 self.image_update.emit(Pic)
                 self.student_data_update.emit(self.code)
@@ -543,8 +607,8 @@ class FaceVerificationThread(QThread):
         self.wait()
 
 
-if __name__ == '__main__':
-    DeepFace.find('utils/test.png', db_path=IMG_PATH, enforce_detection=False)
+if __name__ == "__main__":
+    DeepFace.find("utils/test.jpg", db_path=IMG_PATH, enforce_detection=False)
     App = QApplication(sys.argv)
     Root = MainWindow()
     Root.show()

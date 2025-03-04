@@ -7,18 +7,29 @@
     <x>0</x>
     <y>0</y>
     <width>1050</width>
-    <height>600</height>
+    <height>570</height>
    </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
   </property>
   <property name="windowTitle">
    <string>Registro de Alumno</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QPushButton:hover {
+    background-color: #0277BD;
+}</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QLabel" name="imageLabel">
     <property name="geometry">
      <rect>
-      <x>40</x>
-      <y>50</y>
+      <x>20</x>
+      <y>20</y>
       <width>480</width>
       <height>480</height>
      </rect>
@@ -30,7 +41,9 @@
      </sizepolicy>
     </property>
     <property name="styleSheet">
-     <string notr="true">background-color: rgb(203, 201, 197);</string>
+     <string notr="true">border-radius: 7px;
+border: 2px solid #58e4f2;
+background-color: rgb(198, 206, 206);</string>
     </property>
     <property name="text">
      <string/>
@@ -39,10 +52,10 @@
    <widget class="Line" name="line">
     <property name="geometry">
      <rect>
-      <x>510</x>
-      <y>20</y>
+      <x>470</x>
+      <y>0</y>
       <width>81</width>
-      <height>521</height>
+      <height>601</height>
      </rect>
     </property>
     <property name="orientation">
@@ -52,22 +65,32 @@
    <widget class="QLabel" name="timeNowLabel">
     <property name="geometry">
      <rect>
-      <x>570</x>
-      <y>90</y>
-      <width>281</width>
+      <x>520</x>
+      <y>30</y>
+      <width>191</width>
       <height>31</height>
      </rect>
     </property>
     <property name="font">
      <font>
       <family>Archivo SemiBold</family>
-      <pointsize>10</pointsize>
+      <pointsize>-1</pointsize>
       <weight>75</weight>
       <bold>true</bold>
      </font>
     </property>
     <property name="layoutDirection">
      <enum>Qt::RightToLeft</enum>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">font-size: 14px;
+font-family: Archivo SemiBold;
+font-weight: bold;
+color:#272d2d;
+background-color: #31c8d8;
+padding: 3px;
+border-radius: 7px;
+border: 2px solid #58e4f2;</string>
     </property>
     <property name="text">
      <string>DD/MM//YYYY HH:MM:SS</string>
@@ -79,22 +102,38 @@
    <widget class="QPushButton" name="registerButton">
     <property name="geometry">
      <rect>
-      <x>720</x>
-      <y>450</y>
-      <width>141</width>
-      <height>61</height>
+      <x>640</x>
+      <y>440</y>
+      <width>120</width>
+      <height>60</height>
      </rect>
     </property>
     <property name="font">
      <font>
-      <family>Archivo Black</family>
-      <pointsize>12</pointsize>
-      <weight>75</weight>
-      <bold>true</bold>
+      <family>Archivo SemiBold</family>
+      <pointsize>-1</pointsize>
+      <weight>50</weight>
+      <bold>false</bold>
      </font>
     </property>
     <property name="statusTip">
      <string>Registrar estudiante</string>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">    background-color: #29B6F6;
+    color: #FFFFFF;
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: normal;
+    border: none;
+font-size: 16px;
+font-family: Archivo SemiBold;
+color:#272d2d;
+background-color: #31c8d8;
+padding: 3px;
+border-radius: 7px;
+border: 2px solid #58e4f2;</string>
     </property>
     <property name="text">
      <string>Registrar</string>
@@ -103,19 +142,38 @@
    <widget class="QPushButton" name="backButton">
     <property name="geometry">
      <rect>
-      <x>0</x>
-      <y>0</y>
-      <width>91</width>
-      <height>41</height>
+      <x>800</x>
+      <y>440</y>
+      <width>120</width>
+      <height>60</height>
      </rect>
     </property>
     <property name="font">
      <font>
       <family>Archivo SemiBold</family>
-      <pointsize>10</pointsize>
-      <weight>75</weight>
-      <bold>true</bold>
+      <pointsize>-1</pointsize>
+      <weight>50</weight>
+      <bold>false</bold>
      </font>
+    </property>
+    <property name="statusTip">
+     <string>Volver a la pantalla principal</string>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">    background-color: #29B6F6;
+    color: #FFFFFF;
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: normal;
+    border: none;
+font-size: 16px;
+font-family: Archivo SemiBold;
+color:#272d2d;
+background-color: #31c8d8;
+padding: 3px;
+border-radius: 7px;
+border: 2px solid #58e4f2;</string>
     </property>
     <property name="text">
      <string>Volver</string>
@@ -124,26 +182,39 @@
    <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
-      <x>570</x>
+      <x>520</x>
       <y>130</y>
-      <width>461</width>
+      <width>511</width>
       <height>261</height>
      </rect>
     </property>
-    <layout class="QHBoxLayout" name="horizontalLayout_2">
+    <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="2,10">
      <item>
       <layout class="QHBoxLayout" name="horizontalLayout">
        <item>
         <layout class="QVBoxLayout" name="verticalLayout">
+         <property name="spacing">
+          <number>25</number>
+         </property>
          <item>
           <widget class="QLabel" name="nameLabel">
            <property name="font">
             <font>
-             <family>Archivo ExtraBold</family>
-             <pointsize>14</pointsize>
+             <family>Archivo SemiBold</family>
+             <pointsize>-1</pointsize>
              <weight>75</weight>
              <bold>true</bold>
             </font>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">font-size: 16px;
+font-family: Archivo SemiBold;
+font-weight: bold;
+color:#272d2d;
+background-color: #31c8d8;
+padding: 3px;
+border-radius: 7px;
+border: 2px solid #58e4f2;</string>
            </property>
            <property name="text">
             <string>Nombres:</string>
@@ -157,11 +228,21 @@
           <widget class="QLabel" name="firstSurnameLabel">
            <property name="font">
             <font>
-             <family>Archivo ExtraBold</family>
-             <pointsize>14</pointsize>
+             <family>Archivo SemiBold</family>
+             <pointsize>-1</pointsize>
              <weight>75</weight>
              <bold>true</bold>
             </font>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">font-size: 16px;
+font-family: Archivo SemiBold;
+font-weight: bold;
+color:#272d2d;
+background-color: #31c8d8;
+padding: 3px;
+border-radius: 7px;
+border: 2px solid #58e4f2;</string>
            </property>
            <property name="text">
             <string>Apellido Paterno:</string>
@@ -175,11 +256,21 @@
           <widget class="QLabel" name="secondSurnameLabel">
            <property name="font">
             <font>
-             <family>Archivo ExtraBold</family>
-             <pointsize>14</pointsize>
+             <family>Archivo SemiBold</family>
+             <pointsize>-1</pointsize>
              <weight>75</weight>
              <bold>true</bold>
             </font>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">font-size: 16px;
+font-family: Archivo SemiBold;
+font-weight: bold;
+color:#272d2d;
+background-color: #31c8d8;
+padding: 3px;
+border-radius: 7px;
+border: 2px solid #58e4f2;</string>
            </property>
            <property name="text">
             <string>Apellido Materno:</string>
@@ -193,14 +284,24 @@
           <widget class="QLabel" name="codeLabel">
            <property name="font">
             <font>
-             <family>Archivo ExtraBold</family>
-             <pointsize>14</pointsize>
+             <family>Archivo SemiBold</family>
+             <pointsize>-1</pointsize>
              <weight>75</weight>
              <bold>true</bold>
             </font>
            </property>
+           <property name="styleSheet">
+            <string notr="true">font-size: 16px;
+font-family: Archivo SemiBold;
+font-weight: bold;
+color:#272d2d;
+background-color: #31c8d8;
+padding: 3px;
+border-radius: 7px;
+border: 2px solid #58e4f2;</string>
+           </property>
            <property name="text">
-            <string>Código de Matrícula:</string>
+            <string>Código Matrícula:</string>
            </property>
            <property name="alignment">
             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -213,12 +314,15 @@
      </item>
      <item>
       <layout class="QVBoxLayout" name="verticalLayout_2">
+       <property name="spacing">
+        <number>40</number>
+       </property>
        <item>
         <widget class="QLineEdit" name="nameInput">
          <property name="font">
           <font>
            <family>Archivo Medium</family>
-           <pointsize>14</pointsize>
+           <pointsize>12</pointsize>
           </font>
          </property>
          <property name="toolTip">
@@ -229,6 +333,9 @@
          </property>
          <property name="whatsThis">
           <string>Ingrese su nombre</string>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">background-color:#83e5ef;</string>
          </property>
          <property name="text">
           <string/>
@@ -249,11 +356,15 @@
          <property name="font">
           <font>
            <family>Archivo Medium</family>
-           <pointsize>14</pointsize>
+           <pointsize>12</pointsize>
           </font>
          </property>
          <property name="statusTip">
           <string>Ingrese su Apellido Paterno</string>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">background-color:#83e5ef;
+</string>
          </property>
          <property name="dragEnabled">
           <bool>false</bool>
@@ -268,11 +379,14 @@
          <property name="font">
           <font>
            <family>Archivo Medium</family>
-           <pointsize>14</pointsize>
+           <pointsize>12</pointsize>
           </font>
          </property>
          <property name="statusTip">
           <string>Ingrese su Apellido Materno</string>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">background-color:#83e5ef;</string>
          </property>
          <property name="dragEnabled">
           <bool>false</bool>
@@ -287,11 +401,14 @@
          <property name="font">
           <font>
            <family>Archivo Medium</family>
-           <pointsize>14</pointsize>
+           <pointsize>12</pointsize>
           </font>
          </property>
          <property name="statusTip">
           <string>Ingrese su Cóidigo de Matrícula</string>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">background-color:#83e5ef;</string>
          </property>
          <property name="dragEnabled">
           <bool>false</bool>
@@ -314,6 +431,11 @@
       <height>130</height>
      </rect>
     </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: transparent;
+    margin: 0;
+    padding: 0;</string>
+    </property>
     <property name="text">
      <string/>
     </property>
@@ -321,6 +443,13 @@
      <pixmap resource="img.qrc">:/logomecat/logomecat_resized.png</pixmap>
     </property>
    </widget>
+   <zorder>line</zorder>
+   <zorder>imageLabel</zorder>
+   <zorder>timeNowLabel</zorder>
+   <zorder>registerButton</zorder>
+   <zorder>backButton</zorder>
+   <zorder>layoutWidget</zorder>
+   <zorder>logoLabel</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
@@ -331,8 +460,20 @@
      <height>21</height>
     </rect>
    </property>
+   <widget class="QMenu" name="menuSalir">
+    <property name="title">
+     <string>Opciones</string>
+    </property>
+    <addaction name="actionSalir"/>
+   </widget>
+   <addaction name="menuSalir"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionSalir">
+   <property name="text">
+    <string>Salir</string>
+   </property>
+  </action>
  </widget>
  <resources>
   <include location="img.qrc"/>
